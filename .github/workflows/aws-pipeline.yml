@@ -1,0 +1,17 @@
+name: AWS Instance Provisioning Pipeline
+
+on:
+  push:
+    branches:
+      - main  # This triggers the workflow on commits to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Placeholder Step
+      run: echo "Pipeline trigger successful!"
