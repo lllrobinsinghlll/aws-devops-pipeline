@@ -1,17 +1,32 @@
-name: AWS Instance Provisioning Pipeline
+name: Terraform AWS EC2 Deployment
 
 on:
   push:
     branches:
-      - main  # This triggers the workflow on commits to the main branch
+      - main
 
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
-    - name: Placeholder Step
-      run: echo "Pipeline trigger successful!"
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: '1.9.8'  # Specify your Terraform version here
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: us-east-1  # The region for your instance
+
+    - name: Terraform init
+      run: terraform init
+
+    - name: Terraform apply
+      run: terraform apply -auto-approve
